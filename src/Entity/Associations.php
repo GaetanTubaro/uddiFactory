@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AssociationsRepository::class)]
-class Associations
+class Associations extends User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -71,5 +71,16 @@ class Associations
         }
 
         return $this;
+    }
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = parent::getRoles();
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_ASSO';
+
+        return array_unique($roles);
     }
 }
