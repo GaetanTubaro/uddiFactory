@@ -30,6 +30,7 @@ class DogsFixtures extends Fixture implements DependentFixtureInterface
             'Eva',
             'Simon',
             'Moustache',
+            'Chaussette'
         ];
         $dogPast = [
             'idfodmqhfmoqdhfhdf',
@@ -37,6 +38,7 @@ class DogsFixtures extends Fixture implements DependentFixtureInterface
             'fùhqdfqkhfmlqdkhfmlq',
             'dqijfùqjdfmlhlmhdfqjm',
             'dfqfqfjaj^jskdjfmmdfj',
+            'dsf,dpôviazomljmjmqsjd',
             'dsf,dpôviazomljmjmqsjd',
         ];
         $dogDescription = [
@@ -46,6 +48,7 @@ class DogsFixtures extends Fixture implements DependentFixtureInterface
             'dfodsqddfqfqhqohfqjd',
             'dfsdqoghjlkhqohfqjd',
             'lkgdjgjdhgkdjklg',
+            'lkgdjgjdhgkdjklg',
         ];
         $dogIsLOF = [
             true,
@@ -54,8 +57,10 @@ class DogsFixtures extends Fixture implements DependentFixtureInterface
             true,
             false,
             true,
+            true,
         ];
         $dogIsAdopted = [
+            false,
             false,
             false,
             false,
@@ -70,8 +75,10 @@ class DogsFixtures extends Fixture implements DependentFixtureInterface
             true,
             false,
             true,
+            true,
         ];
         $dogBirth = [
+            new DateTime(),
             new DateTime(),
             new DateTime(),
             new DateTime(),
@@ -81,7 +88,7 @@ class DogsFixtures extends Fixture implements DependentFixtureInterface
         ];
         $ads = $this->advertisementsRepository->findAll();
         $species = $this->speciesRepository->findAll();
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i < count($dogNames); $i++) {
             $dog = new Dogs();
             $dog->setName($dogNames[$i]);
             $dog->setPast($dogPast[$i]);

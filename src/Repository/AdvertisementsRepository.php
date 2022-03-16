@@ -48,6 +48,21 @@ class AdvertisementsRepository extends ServiceEntityRepository
     // /**
     //  * @return Advertisements[] Returns an array of Advertisements objects
     //  */
+    
+    public function findNews()
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.creation_date', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+
+    // /**
+    //  * @return Advertisements[] Returns an array of Advertisements objects
+    //  */
     /*
     public function findByExampleField($value)
     {
