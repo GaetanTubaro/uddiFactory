@@ -142,4 +142,14 @@ class Advertisements
 
         return $this;
     }
+
+    public function getPictures(): array
+    {
+        $pictures = [];
+        $dogs = $this->getAdvertisementDogs();
+        foreach ($dogs as $dog) {
+            $pictures = array_merge($pictures, $dog->getPictures()->toArray());
+        }
+        return $pictures;
+    }
 }

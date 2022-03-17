@@ -51,12 +51,24 @@ class AdvertisementsRepository extends ServiceEntityRepository
     
     public function findNews()
     {
-        return $this->createQueryBuilder('a')
+        $newsTab = $this->createQueryBuilder('a')
             ->orderBy('a.creation_date', 'DESC')
-            ->setMaxResults(5)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+        foreach ($newsTab as $news) {
+            $mustDelete = true;
+            foreach ($news->getAdvertisementDogs() as $dog) {
+                if (!$dog->getIsAdopted()) {
+                    $mustDelete = false;
+                }
+            }
+            if ($mustDelete) {
+                $key = array_search($news, $newsTab);
+                array_splice($newsTab, $key, 1);
+            }
+        }
+        $newsTab = array_slice($newsTab, 0, 5);
+        return $newsTab;
     }
     
 
