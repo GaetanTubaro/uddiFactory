@@ -22,19 +22,23 @@ class AdvertisementsFixtures extends Fixture implements DependentFixtureInterfac
     {
         $associations = $this->associationsRepository->findAll();
 
-        $ad1 = new Advertisements;
-        $RandNb = mt_rand(0, count($associations)-1);
-        $ad1->setTitle("Chiens à adopter")
-        ->setCreationDate(new DateTime())
-        ->setAssociation($associations[$RandNb]);
-        $manager->persist($ad1);
+        $adNames = [
+            "Chiens à adopter",
+            "Boules de poil cherchent foyers confortables",
+            "Portée de chiots à adopter",
+            "Offrez une belle fin de vie à ces vieillards",
+            "Mignons petits chiens",
+            "Adoptez-moi"
+        ];
 
-        $ad2 = new Advertisements;
-        $RandNb = mt_rand(0, count($associations)-1);
-        $ad2->setTitle("Boules de poil cherchent foyers confortables")
+        foreach ($adNames as $name) {
+            $ad = new Advertisements;
+            $RandNb = mt_rand(0, count($associations)-1);
+            $ad->setTitle($name)
         ->setCreationDate(new DateTime())
         ->setAssociation($associations[$RandNb]);
-        $manager->persist($ad2);
+            $manager->persist($ad);
+        }
 
         $manager->flush();
     }

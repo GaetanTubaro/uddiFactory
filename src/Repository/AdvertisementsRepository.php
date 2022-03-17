@@ -48,6 +48,25 @@ class AdvertisementsRepository extends ServiceEntityRepository
     // /**
     //  * @return Advertisements[] Returns an array of Advertisements objects
     //  */
+    
+    public function findNews()
+    {
+        $adTab = $this->createQueryBuilder('a')
+            ->select('DISTINCT a')
+            ->orderBy('a.creation_date', 'DESC')
+            ->setMaxResults(5)
+            ->leftJoin('a.advertisement_dogs', 'd')
+            ->where('d.isAdopted = :isAdopted')
+            ->setParameter('isAdopted', false)
+            ->getQuery()
+            ->getResult();
+        return $adTab;
+    }
+    
+
+    // /**
+    //  * @return Advertisements[] Returns an array of Advertisements objects
+    //  */
     /*
     public function findByExampleField($value)
     {
