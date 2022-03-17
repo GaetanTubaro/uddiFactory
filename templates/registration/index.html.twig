@@ -1,15 +1,7 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
 {% block body %}
-<form class="d-flex flex-column justify-content-center w-25 mx-auto p-5" method="post">
-    <div class="mb-3">
-				<label for="inputUsername">Nom d'utilisateur</label>
-				<input type="text" class="form-control" id="inputUsername" name="username" autocomplete="username" autofocus required>
-			</div>
-			<div class="mb-3">
-				<label for="inputPassword">Mot de passe</label>
-				<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-			</div>
-			<button type="submit" class="btn btn-primary">Inscription</button>
-</form>
+<div class="w-50 mx-auto mt-5">
+{{ form(form)}}
+</div>
 {% endblock %}
