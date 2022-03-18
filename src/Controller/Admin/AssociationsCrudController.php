@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Associations;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -27,9 +28,10 @@ class AssociationsCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('username')->hideOnIndex(),
-            TextField::new('password')->hideOnIndex(),
+            TextField::new('username'),
+            TextField::new('plainPassword')->hideOnIndex(),
             TextField::new('name'),
+            DateField::new('creation_date')->hideOnForm(),
         ];
     }
 }
