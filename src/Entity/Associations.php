@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AssociationsRepository;
+use App\Repository\DogsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -75,5 +76,37 @@ class Associations extends User
         $roles[] = 'ROLE_ASSO';
 
         return array_unique($roles);
+    }
+
+    public function getIncompleteAd(): array
+    {
+        $incompleteAds = [];
+        foreach ($this->asso_ad as $ad) {
+            foreach ($ad->getAdvertisementDogs() as $dog) {
+                if (!$dog->getIsAdopted()) {
+                    array_push($incompleteAds, $ad);
+                    break;
+                }
+            }
+        }
+        return $incompleteAds;
+    }
+
+    public function getCompleteAd(): array
+    {
+        $completeAds = [];
+        foreach ($this->asso_ad as $ad) {
+            $complete = true;
+            foreach ($ad->getAdvertisementDogs() as $dog) {
+                if (!$dog->getIsAdopted()) {
+                    $complete = false;
+                    break;
+                }
+            }
+            if ($complete) {
+                array_push($completeAds, $ad);
+            }
+        }
+        return $completeAds;
     }
 }

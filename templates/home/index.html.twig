@@ -17,7 +17,7 @@
 		}
 	</style>
 
-	<div class="container-fluid mt-4">
+	<div class="container-fluid mt-4 d-flex flex-column align-items-center">
 		<h1 class="text-center">Dernières annonces</h1>
 		<div class="row d-flex justify-content-center mt-3">
 			{% for news in tabNews %}
@@ -64,6 +64,28 @@
 
 				</div>
 			{% endfor %}
+		</div>
+
+		<h1 class="text-center mt-5">Liste des éleveurs et associations</h1>
+		<div style="width:60%">
+			<table class="table mt-3">
+				<thead>
+					<tr>
+						<th scope="col">Nom</th>
+						<th scope="col">Nombre d'annonces à pourvoir</th>
+						<th scope="col">Nombre d'annonces pourvues</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for association in associations %}
+						<tr>
+							<td>{{ association.name }}</td>
+							<td>{{ association.getIncompleteAd()|length }}</td>
+							<td>{{ association.getCompleteAd()|length }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 	</div>
 {% endblock %}

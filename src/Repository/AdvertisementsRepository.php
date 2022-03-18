@@ -45,13 +45,13 @@ class AdvertisementsRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Advertisements[] Returns an array of Advertisements objects
-    //  */
+    /**
+    * @return Advertisements[] Returns an array of Advertisements objects
+    */
     
     public function findNews()
     {
-        $adTab = $this->createQueryBuilder('a')
+        return $this->createQueryBuilder('a')
             ->select('DISTINCT a')
             ->orderBy('a.creation_date', 'DESC')
             ->setMaxResults(5)
@@ -60,7 +60,6 @@ class AdvertisementsRepository extends ServiceEntityRepository
             ->setParameter('isAdopted', false)
             ->getQuery()
             ->getResult();
-        return $adTab;
     }
     
 

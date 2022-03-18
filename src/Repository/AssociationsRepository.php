@@ -45,6 +45,21 @@ class AssociationsRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Associations[] Returns an array of Associations objects
+    */
+
+    public function findListHome()
+    {
+        return $this->createQueryBuilder('a')
+            ->groupBy('a.id', 'ad')
+            ->join('a.asso_ad', 'ad')
+            ->orderBy('ad.creation_date', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Associations[] Returns an array of Associations objects
     //  */
@@ -61,6 +76,23 @@ class AssociationsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+    * @return Associations[] Returns an array of Associations objects
+    */
+    public function findIncompleteAds($id)
+    {
+        return $this->createQueryBuilder('asso')
+            ->groupBy('ad.id')
+            ->join('asso.asso_ad', 'ad')
+            ->join('ad.advertisement_dogs', 'dogs')
+            ->andWhere('asso.id = :val')
+            ->setParameter('id', $id)
+            ->andWhere('dogs.isAdopted = false')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Associations
