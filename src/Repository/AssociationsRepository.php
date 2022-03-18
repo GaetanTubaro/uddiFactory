@@ -45,6 +45,21 @@ class AssociationsRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Associations[] Returns an array of Associations objects
+    */
+
+    public function findListHome()
+    {
+        return $this->createQueryBuilder('a')
+            ->groupBy('a.id', 'ad')
+            ->join('a.asso_ad', 'ad')
+            ->orderBy('ad.creation_date', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Associations[] Returns an array of Associations objects
     //  */
@@ -61,7 +76,7 @@ class AssociationsRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    
     /*
     public function findOneBySomeField($value): ?Associations
     {
