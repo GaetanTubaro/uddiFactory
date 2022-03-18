@@ -76,24 +76,7 @@ class AssociationsRepository extends ServiceEntityRepository
         ;
     }
     */
-
-    /**
-    * @return Associations[] Returns an array of Associations objects
-    */
-    public function findIncompleteAds($id)
-    {
-        return $this->createQueryBuilder('asso')
-            ->groupBy('ad.id')
-            ->join('asso.asso_ad', 'ad')
-            ->join('ad.advertisement_dogs', 'dogs')
-            ->andWhere('asso.id = :val')
-            ->setParameter('id', $id)
-            ->andWhere('dogs.isAdopted = false')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
+    
     /*
     public function findOneBySomeField($value): ?Associations
     {
