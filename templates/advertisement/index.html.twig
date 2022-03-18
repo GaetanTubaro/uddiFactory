@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdvertisementController!
+{% block title %}
+	{{ advertisement.title }}
 {% endblock %}
 
 {% block body %}
@@ -17,23 +18,73 @@
 		}
 	</style>
 
-	<div class="example-wrapper">
-		<h1>Hello
-			{{ advertisement.title }}
-			! ✅</h1>
+	<div class="container d-flex flex-column align-items-center">
+		<h1>{{ advertisement.title }}</h1>
+		<p>Proposée par
+			{{ advertisement.association.name }}</p>
+		<a href="{{ path("adopt_dog", {id: advertisement.id}) }}">
+			<button class="btn btn-secondary">Adopter un de ces chiens</button>
+		</a>
 
-		This friendly message is coming from:
-		<ul>
-			<li>Your controller at
-				<code>
-					<a href="{{ 'C:/Users/Clara/Documents/dev/symfony/uddiFactory/src/Controller/AdvertisementController.php'|file_link(0) }}">src/Controller/AdvertisementController.php</a>
-				</code>
-			</li>
-			<li>Your template at
-				<code>
-					<a href="{{ 'C:/Users/Clara/Documents/dev/symfony/uddiFactory/templates/advertisement/index.html.twig'|file_link(0) }}">templates/advertisement/index.html.twig</a>
-				</code>
-			</li>
-		</ul>
+		{% for dog in advertisement.getAdvertisementDogs() %}
+			{% if not dog.isAdopted %}
+				{% if not loop.first %}<hr class="w-100">
+				{% endif %}
+				<div class="row w-100 mt-4">
+					<div id="carouselDog{{ dog.id }}" class="carousel slide col-5" data-bs-ride="carousel">
+						<div class="carousel-inner">
+							{% for picture in dog.getPictures() %}
+								<div class="carousel-item {% if loop.first %}active{% endif %}">
+									<img src="{{ picture.path }}" class="d-block w-100">
+								</div>
+							{% endfor %}
+						</div>
+						{% if dog.getPictures()|length > 1 %}
+							<button class="carousel-control-prev" type="button" data-bs-target="#carouselDog{{ dog.id }}" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#carouselDog{{ dog.id }}" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						{% endif %}
+					</div>
+					<div class="col mt-2">
+						<h2 class="">{{ dog.name }}</h2>
+						<p class="mb-1">
+							<span class="fw-bold">Date de naissance :</span>
+							{{ dog.getBirthDate()|format_datetime('short', 'none') }}</p>
+						<p class="mb-1">
+							<span class="fw-bold">Race :</span>
+							{% if dog.getDogSpecies()|length > 1 %}Croisé
+							{% endif %}
+							{% for specie in dog.getDogSpecies() %}
+								{% if not loop.first %}
+									et
+								{% endif %}
+								{{ specie.name }}
+							{% endfor %}
+						</p>
+						<p class="mb-1">
+							<span class="fw-bold">LOF :</span>
+							{% if dog.isLOF %}oui{% else %}non
+							{% endif %}
+						</p>
+						<p class="mb-1">
+							<span class="fw-bold">Accepte les autres animaux :</span>
+							{% if dog.otherAnimals %}oui{% else %}non
+							{% endif %}
+						</p>
+						<p class="mb-1">
+							<span class="fw-bold">Description :</span>
+							{{ dog.description }}</p>
+						<p class="mb-1">
+							<span class="fw-bold">Passif :</span>
+							{{ dog.past }}</p>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
 	</div>
 {% endblock %}
