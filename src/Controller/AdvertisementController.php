@@ -19,7 +19,7 @@ class AdvertisementController extends AbstractController
 
 
     #[Route('/advertisement/{id}', name: 'show_advertisement')]
-    public function show_advertisement(Advertisements $advertisement, AdvertisementsRepository $advertisementsRepository): Response
+    public function show_advertisement(Advertisements $advertisement): Response
     {
         return $this->render('advertisement/index.html.twig', [
             'advertisement' => $advertisement,

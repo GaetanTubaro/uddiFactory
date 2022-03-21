@@ -89,4 +89,15 @@ class Requests
 
         return $this;
     }
+    
+    public function unreadMessages(): bool
+    {
+        $unread = false;
+        foreach ($this->getMessage() as $message) {
+            if ($message->getIsRead() == false && $message->getWriter() != $this->getAdopter()) {
+                $unread = true;
+            }
+        }
+        return $unread;
+    }
 }

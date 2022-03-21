@@ -23,7 +23,7 @@
 		{% block nav %}
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<div class="container-fluid">
-					<a class="navbar-brand" href="#">UddiFactory</a>
+					<a class="navbar-brand" href="{{ path('app_home')}}">UddiFactory</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
@@ -36,9 +36,9 @@
 								<a class="nav-link" href="{{ path('advertisements_list') }}">Annonces</a>
 							</li>
 							{% if is_granted('ROLE_ADMIN') %}
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>	
-							</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>
+								</li>
 							{% endif %}
 							{% if is_granted('ROLE_USER') %}
 								<li class="nav-item">
@@ -47,7 +47,7 @@
 							{% endif %}
 							<li class="nav-item	ms-auto">
 								{% if is_granted('ROLE_USER') %}
-									<a class="nav-link" href="#">{{ app.user.username }}</a>
+									<a class="nav-link" href="{{ path('user_account') }}">{{ app.user.username }}</a>
 								{% else %}
 									<a class="nav-link" href="{{ path('security_login') }}">Connexion</a>
 								{% endif %}

@@ -30,6 +30,10 @@ class Messages
     #[ORM\JoinColumn(nullable: false)]
     private $request;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $writer;
+
     public function __construct()
     {
         $this->creation_date = new DateTime();
@@ -97,6 +101,18 @@ class Messages
     public function setRequest(?Requests $request): self
     {
         $this->request = $request;
+
+        return $this;
+    }
+
+    public function getWriter(): ?User
+    {
+        return $this->writer;
+    }
+
+    public function setWriter(?User $writer): self
+    {
+        $this->writer = $writer;
 
         return $this;
     }
