@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Annonces
+{% endblock title %}
+
+{% block body %}
+	<div class="container-fluid mt-4 d-flex flex-column align-items-center">
+		<h1 class="text-center">Annonces à pouvoir</h1>
+		<div class="row d-flex justify-content-center mt-3">
+			{% for ad in ads %}
+				<div class="card col-2 mx-3 p-0">
+					<div id="carouselAd{{ ad.id }}" class="carousel slide" style="height:150px" data-bs-ride="carousel">
+						<div class="carousel-inner w-100 h-100">
+							{% for pictures in ad.getPictures() %}
+								<div class="carousel-item {% if loop.first %} active {% endif %}">
+									<img src="{{ pictures.getPath() }}" class="d-block w-100 h-100" alt="...">
+								</div>
+							{% endfor %}   
+						</div>
+						{% if ad.getPictures()|length > 1 %}
+							<button class="carousel-control-prev" type="button" data-bs-target="#carouselAd{{ ad.id }}" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#carouselAd{{ ad.id }}" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						{% endif %}
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">{{ ad.title }}</h5>
+					</div>
+					<ul class="list-group list-group-flush">
+						{% for dog in ad.getAdvertisementDogs() %}
+							<li class="list-group-item">{{ dog.name }}
+								|
+								{% for species in dog.getDogSpecies() %}
+									{% if not loop.first %}
+										et
+									{% endif %}
+									{{ species.name }}
+								{% endfor %}
+							</li>
+						{% endfor %}
+						<div class="card-footer d-flex justify-content-between align-items-center">
+							<a href="{{ path("show_advertisement", {id: ad.getId()}) }}">
+								<button class="btn btn-secondary">Plus d'info</button>
+							</a>
+							<span class="ms-auto">{{ ad.getCreationDate()|format_datetime('short', 'none') }}</span>
+						</div>
+					</ul>
+
+				</div>
+			{% endfor %}
+		</div>
+{% endblock body %}
