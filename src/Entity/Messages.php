@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MessagesRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MessagesRepository::class)]
@@ -28,6 +29,12 @@ class Messages
     #[ORM\ManyToOne(targetEntity: Requests::class, inversedBy: 'message')]
     #[ORM\JoinColumn(nullable: false)]
     private $request;
+
+    public function __construct()
+    {
+        $this->creation_date = new DateTime();
+        $this->isRead = false;
+    }
 
     public function getId(): ?int
     {
