@@ -6,6 +6,8 @@ use App\Entity\Advertisements;
 use App\Entity\Messages;
 use App\Entity\Requests;
 use App\Form\AdoptionType;
+use App\Form\FiltersType;
+use App\Form\Model\AdvertisementFilter;
 use App\Repository\AdvertisementsRepository;
 use App\Repository\RequestsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -34,33 +36,33 @@ class AdvertisementController extends AbstractController
         $message = new Messages();
         $message->setWriter($this->getUser());
         $adoptionRequest->addMessage($message);
-
         $adoptionRequest->setAdopter($this->getUser());
-
         $form = $this->createForm(AdoptionType::class, $adoptionRequest, [
             'ad_id' => $advertisement->getId(),
         ]);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $requestsRepository->add($adoptionRequest);
             $this->addFlash('success', 'Demande effectuée');
-
+            
             return $this->redirectToRoute('show_advertisement', ['id' => $advertisement->getId()]);
         }
-
+        
         return $this->render('advertisement/adoptForm.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-    
     #[Route('/advertisements', name: 'advertisements_list')]
-    public function advertisements_list(AdvertisementsRepository $advertisementsRepository): Response
+    public function advertisements_list(AdvertisementsRepository $advertisementsRepository, Request $request): Response
     {
-        $ads = $advertisementsRepository->showAdvertismentsWithDog();
+        $filterAd = new AdvertisementFilter();
+        $filterForm = $this->createForm(FiltersType::class, $filterAd);
+        $filterForm->handleRequest($request);
+
+        $ads = $advertisementsRepository->findByFilter($filterAd);
         return $this->render('advertisement/advertisements.html.twig', [
-            'ads' => $ads
+            'filterForm' => $filterForm->createView(),
+            'ads' => $ads,
         ]);
     }
 }
