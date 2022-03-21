@@ -28,7 +28,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
-    #[Assert\NotBlank()]
     private $password;
 
     #[ORM\Column(type: 'date')]
@@ -38,7 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $supression_date;
 
     #[ORM\Column(type: 'boolean')]
-    private $isAdmin;
+    private $isAdmin = false;
+
+    protected ?string $plainPassword = null;
 
     public function getId(): ?int
     {
@@ -146,6 +147,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsAdmin(bool $isAdmin): self
     {
         $this->isAdmin = $isAdmin;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
