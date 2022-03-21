@@ -23,7 +23,7 @@ class Requests
     #[ORM\JoinColumn(nullable: false)]
     private $dog;
 
-    #[ORM\OneToMany(mappedBy: 'request', targetEntity: Messages::class)]
+    #[ORM\OneToMany(mappedBy: 'request', targetEntity: Messages::class, cascade: ['persist', 'remove'])]
     private $message;
 
     public function __construct()

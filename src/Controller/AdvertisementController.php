@@ -2,27 +2,53 @@
 
 namespace App\Controller;
 
+use App\Entity\Advertisements;
+use App\Entity\Messages;
+use App\Entity\Requests;
+use App\Form\AdoptionType;
 use App\Repository\AdvertisementsRepository;
-use App\Repository\DogsRepository;
+use App\Repository\RequestsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdvertisementController extends AbstractController
 {
     #[Route('/advertisement/{id}', name: 'show_advertisement')]
-    public function show_advertisement(int $id, AdvertisementsRepository $advertisementsRepository): Response
+    public function show_advertisement(Advertisements $advertisement, AdvertisementsRepository $advertisementsRepository): Response
     {
         return $this->render('advertisement/index.html.twig', [
-            'advertisement' => $advertisementsRepository->findOneBy(array("id" => $id))
+            'advertisement' => $advertisement,
         ]);
     }
     
     #[Route('/advertisement/{id}/adopt', name: 'adopt_dog')]
-    public function adopt_dog(int $id, AdvertisementsRepository $advertisementsRepository): Response
+    #[IsGranted('ROLE_ADOPTERS')]
+    public function adopt_dog(Advertisements $advertisement, RequestsRepository $requestsRepository, Request $request): Response
     {
+        $adoptionRequest = new Requests();
+        $message = new Messages();
+        $adoptionRequest->addMessage($message);
+
+        $adoptionRequest->setAdopter($this->getUser());
+
+        $form = $this->createForm(AdoptionType::class, $adoptionRequest, [
+            'ad_id' => $advertisement->getId(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestsRepository->add($adoptionRequest);
+            $this->addFlash('success', 'Demande effectuée');
+
+            return $this->redirectToRoute('show_advertisement', ['id' => $advertisement->getId()]);
+        }
+
         return $this->render('advertisement/adoptForm.html.twig', [
-            'advertisement' => $advertisementsRepository->findOneBy(array("id" => $id))
+            'form' => $form->createView(),
         ]);
     }
 }
