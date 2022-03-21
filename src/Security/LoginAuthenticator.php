@@ -60,7 +60,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         /** @var User $user */
         $user = $token->getUser();
         if ($user->getIsAdmin()) {
-            return new RedirectResponse($this->urlGenerator->generate('security_login'));
+            return new RedirectResponse($this->urlGenerator->generate('app_home'));
         }
         
         return new RedirectResponse($this->urlGenerator->generate('app_home'));

@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdvertisementController extends AbstractController
 {
+
+
     #[Route('/advertisement/{id}', name: 'show_advertisement')]
     public function show_advertisement(Advertisements $advertisement, AdvertisementsRepository $advertisementsRepository): Response
     {
@@ -49,6 +51,14 @@ class AdvertisementController extends AbstractController
 
         return $this->render('advertisement/adoptForm.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+    #[Route('/advertisements', name: 'advertisements_list')]
+    public function advertisements_list(AdvertisementsRepository $advertisementsRepository): Response
+    {
+        $ads = $advertisementsRepository->showAdvertismentsWithDog();
+        return $this->render('advertisement/advertisements.html.twig', [
+            'ads' => $ads
         ]);
     }
 }

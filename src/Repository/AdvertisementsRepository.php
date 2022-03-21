@@ -61,6 +61,18 @@ class AdvertisementsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function showAdvertismentsWithDog()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('DISTINCT a')
+            ->orderBy('a.creation_date', 'DESC')
+            ->leftJoin('a.advertisement_dogs', 'd')
+            ->where('d.isAdopted = :isAdopted')
+            ->setParameter('isAdopted', false)
+            ->getQuery()
+            ->getResult();
+    }
     
 
     // /**
