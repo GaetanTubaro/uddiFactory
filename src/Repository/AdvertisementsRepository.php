@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Advertisements;
+use App\Form\Model\AdvertisementFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -61,19 +62,46 @@ class AdvertisementsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    public function showAdvertismentsWithDog()
+    
+    public function findByFilter(AdvertisementFilter $filter)
     {
-        return $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->select('DISTINCT a')
             ->orderBy('a.creation_date', 'DESC')
             ->leftJoin('a.advertisement_dogs', 'd')
+            ->leftJoin('d.dog_species','s')
             ->where('d.isAdopted = :isAdopted')
-            ->setParameter('isAdopted', false)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('isAdopted', false);
+            if($filter->getIsLof()){
+                $qb
+                    ->andWhere('d.isLOF = :isLof')
+                    ->setParameter('isLof', true)
+                ;
+            }
+            if($filter->getAcceptOtherAnimals()){
+                $qb
+                    ->andWhere('d.otherAnimals = :acceptOtherAnimals')
+                    ->setParameter('acceptOtherAnimals', true)
+                ;
+            }
+            if($filter->getSpecies())
+            {
+                $qb
+                    ->andWhere('s.id = :specie')
+                    ->setParameter('specie', $filter->getSpecies())
+                ;
+            }
+            if($filter->getDate())
+            {
+                $qb
+                    ->andWhere('a.creation_date >= :date')
+                    ->setParameter('date', $filter->getDate());
+            }
+            return $qb
+                ->getQuery()
+                ->getResult()
+            ;
     }
-    
 
     // /**
     //  * @return Advertisements[] Returns an array of Advertisements objects

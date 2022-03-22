@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
+{% form_theme filterForm 'bootstrap_5_horizontal_layout.html.twig' %}
 
 {% block title %}
 Annonces
 {% endblock title %}
 
 {% block body %}
+		<h1 class="text-center mt-3">Annonces à pouvoir</h1>
+		<div class=" d-flex mt-3 mx-auto w-25">
+		{{form(filterForm)}}
+		</div>
 	<div class="container-fluid mt-4 d-flex flex-column align-items-center">
-		<h1 class="text-center">Annonces à pouvoir</h1>
-		<div class="row d-flex justify-content-center mt-3">
+		<div class="row w-100 d-flex justify-content-center mt-3">
 			{% for ad in ads %}
 				<div class="card col-2 mx-3 p-0">
 					<div id="carouselAd{{ ad.id }}" class="carousel slide" style="height:150px" data-bs-ride="carousel">
