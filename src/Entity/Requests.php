@@ -24,6 +24,7 @@ class Requests
     private $dog;
 
     #[ORM\OneToMany(mappedBy: 'request', targetEntity: Messages::class, cascade: ['persist', 'remove'])]
+    #[ORM\OrderBy(['creation_date' => 'ASC'])]
     private $message;
 
     public function __construct()
@@ -90,11 +91,11 @@ class Requests
         return $this;
     }
     
-    public function unreadMessages(): bool
+    public function unreadMessages(User $user): bool
     {
         $unread = false;
         foreach ($this->getMessage() as $message) {
-            if ($message->getIsRead() == false && $message->getWriter() != $this->getAdopter()) {
+            if ($message->getIsRead() == false && $message->getWriter() != $user) {
                 $unread = true;
             }
         }

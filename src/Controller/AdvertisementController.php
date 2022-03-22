@@ -32,6 +32,7 @@ class AdvertisementController extends AbstractController
     {
         $adoptionRequest = new Requests();
         $message = new Messages();
+        $message->setWriter($this->getUser());
         $adoptionRequest->addMessage($message);
 
         $adoptionRequest->setAdopter($this->getUser());
@@ -53,6 +54,7 @@ class AdvertisementController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
     #[Route('/advertisements', name: 'advertisements_list')]
     public function advertisements_list(AdvertisementsRepository $advertisementsRepository): Response
     {

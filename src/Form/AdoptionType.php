@@ -24,11 +24,13 @@ class AdoptionType extends AbstractType
                 'multiple' => false,
                 'label' => 'Chien à adopter :',
                 'choice_label' => 'name',
-                'query_builder' => function (DogsRepository $er) use ($id) {
-                    return $er->createQueryBuilder('d')
+                'query_builder' => function (DogsRepository $dogsRepository) use ($id) {
+                    return $dogsRepository->createQueryBuilder('d')
                     ->where('d.advertisement = :id')
                     ->setParameter('id', $id)
-                        ->orderBy('d.name', 'ASC');
+                    ->andWhere('d.isAdopted = :isAdopted')
+                    ->setParameter('isAdopted', false)
+                    ->orderBy('d.name', 'ASC');
                 },
             ])
             ->add('message', CollectionType::class, [
