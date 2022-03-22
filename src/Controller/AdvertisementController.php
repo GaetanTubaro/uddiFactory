@@ -52,6 +52,7 @@ class AdvertisementController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
     #[Route('/advertisements', name: 'advertisements_list')]
     public function advertisements_list(AdvertisementsRepository $advertisementsRepository, Request $request): Response
     {
