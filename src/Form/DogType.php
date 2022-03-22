@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,11 +35,11 @@ class DogType extends AbstractType
                 'label' => 'Description du chien'
             ])
             ->add('isLof', CheckboxType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Certifié LOF'
             ])
             ->add('otherAnimals', CheckboxType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => `Accepte d'autres animaux`
             ])
             ->add('dog_species', EntityType::class, [
@@ -53,12 +54,16 @@ class DogType extends AbstractType
                         ->orderBy('s.name', 'ASC');
                 },
             ]);
+            if ($options['submit']) {
+                $builder->add('Ajouter', SubmitType::class);
+            }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Dogs::class,
+            'submit' => false,
         ]);
     }
 }

@@ -72,7 +72,7 @@ class AdvertisementController extends AbstractController
 
     #[Route('/new_advertisement', name: 'create_advertisement')]
     #[IsGranted('ROLE_ASSO')]
-    public function create_advertisement(Request $request): Response
+    public function create_advertisement(AdvertisementsRepository $advertisementsRepository, Request $request): Response
     {   
         /** @var User $asso */
         $asso = $this->getUser();
@@ -83,7 +83,13 @@ class AdvertisementController extends AbstractController
         $newAdvertisement->setAssociation($asso);
         $newForm = $this->createForm(AdvertisementType::class, $newAdvertisement);
         $newForm->handleRequest($request);
-
+        if($newForm->isSubmitted() && $newForm->isValid())
+        {
+            $advertisementsRepository->add($newAdvertisement);
+            return $this->redirectToRoute('create_dog', [
+                'id' => $newAdvertisement->getId(),
+            ]);
+        };
         return $this->render('advertisement/newForm.html.twig', [
             'newForm' => $newForm->createView(),
         ]);
