@@ -14,12 +14,6 @@
 		{% block javascripts %}{% endblock %}
 	</head>
 	<body>
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success">
-				{{ message }}
-			</div>
-		{% endfor %}
-
 		{% block nav %}
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<div class="container-fluid">
@@ -36,9 +30,9 @@
 								<a class="nav-link" href="{{ path('advertisements_list') }}">Annonces</a>
 							</li>
 							{% if is_granted('ROLE_ADMIN') %}
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>	
-							</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>
+								</li>
 							{% endif %}
 							{% if is_granted('ROLE_USER') %}
 								<li class="nav-item">
@@ -46,7 +40,9 @@
 								</li>
 							{% endif %}
 							<li class="nav-item	ms-auto">
-								{% if is_granted('ROLE_USER') %}
+								{% if is_granted('ROLE_ASSO') %}
+									<a class="nav-link" href="{{ path('associations_infos') }}">{{ app.user.username }}</a>
+								{% elseif is_granted('ROLE_USER') %}
 									<a class="nav-link" href="#">{{ app.user.username }}</a>
 								{% else %}
 									<a class="nav-link" href="{{ path('security_login') }}">Connexion</a>
@@ -57,6 +53,13 @@
 				</div>
 			</nav>
 		{% endblock %}
+		{% for type, flashes in app.flashes %}
+			{% for flash in flashes %}
+				<div class="alert alert-{{ type }}" role="alert">
+					{{ flash }}
+				</div>
+			{% endfor %}
+		{% endfor %}
 		{% block body %}{% endblock %}
 	</body>
 </html>
