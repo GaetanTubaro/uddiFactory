@@ -40,6 +40,11 @@
 									<a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>
 								</li>
 							{% endif %}
+							{% if is_granted('ROLE_ASSO') %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('create_advertisement') }}">Créer une annonce</a>	
+							</li>
+							{% endif %}
 							{% if is_granted('ROLE_USER') %}
 								<li class="nav-item">
 									<a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a>

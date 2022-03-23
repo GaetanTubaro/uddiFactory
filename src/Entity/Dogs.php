@@ -45,7 +45,7 @@ class Dogs
 
     #[Groups(["read:Dog", "read:Advertisement"])]
     #[ORM\Column(type: 'boolean')]
-    private $isAdopted;
+    private $isAdopted = false;
 
     #[Groups(["read:Dog", "read:Advertisement"])]
     #[ORM\OneToMany(mappedBy: 'dog', targetEntity: Pictures::class)]

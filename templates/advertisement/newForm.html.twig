@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% form_theme newForm 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+	<div class="container mt-3 mx-auto w-50">
+		{{form(newForm)}}
+	</div>
+{% endblock %}
