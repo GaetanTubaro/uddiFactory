@@ -48,7 +48,7 @@ class Dogs
     private $isAdopted = false;
 
     #[Groups(["read:Dog", "read:Advertisement"])]
-    #[ORM\OneToMany(mappedBy: 'dog', targetEntity: Pictures::class)]
+    #[ORM\OneToMany(mappedBy: 'dog', targetEntity: Pictures::class, cascade:['persist'])]
     private $pictures;
 
     #[Groups(["read:Dog", "read:Advertisement"])]
