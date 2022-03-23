@@ -1,23 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MyAccountController!
+{% block title %}Mon compte!
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
-
-	<div class="example-wrapper">
+	<div class="container mt-3">
 		<h1>Vos demandes</h1>
 
 		<table class="table">
@@ -51,6 +38,5 @@
 				</tbody>
 			</tbody>
 		</table>
-
-	</ul>
-</div>{% endblock %}
+	</div>
+{% endblock %}
