@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Advertisements;
+use App\Entity\Dogs;
 use App\Entity\Messages;
 use App\Entity\Requests;
+use App\Entity\User;
 use App\Form\AdoptionType;
+use App\Form\AdvertisementType;
 use App\Form\FiltersType;
 use App\Form\Model\AdvertisementFilter;
 use App\Repository\AdvertisementsRepository;
 use App\Repository\RequestsRepository;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +25,7 @@ class AdvertisementController extends AbstractController
 
 
     #[Route('/advertisement/{id}', name: 'show_advertisement')]
-    public function show_advertisement(Advertisements $advertisement, AdvertisementsRepository $advertisementsRepository): Response
+    public function show_advertisement(Advertisements $advertisement): Response
     {
         return $this->render('advertisement/index.html.twig', [
             'advertisement' => $advertisement,
@@ -63,6 +67,31 @@ class AdvertisementController extends AbstractController
         return $this->render('advertisement/advertisements.html.twig', [
             'filterForm' => $filterForm->createView(),
             'ads' => $ads,
+        ]);
+    }
+
+    #[Route('/new_advertisement', name: 'create_advertisement')]
+    #[IsGranted('ROLE_ASSO')]
+    public function create_advertisement(AdvertisementsRepository $advertisementsRepository, Request $request): Response
+    {   
+        /** @var User $asso */
+        $asso = $this->getUser();
+        $newDog = new Dogs();
+        $newAdvertisement = new Advertisements();
+        $newAdvertisement->addAdvertisementDog($newDog);
+        $newAdvertisement->setCreationDate(new DateTime());
+        $newAdvertisement->setAssociation($asso);
+        $newForm = $this->createForm(AdvertisementType::class, $newAdvertisement);
+        $newForm->handleRequest($request);
+        if($newForm->isSubmitted() && $newForm->isValid())
+        {
+            $advertisementsRepository->add($newAdvertisement);
+            return $this->redirectToRoute('create_dog', [
+                'id' => $newAdvertisement->getId(),
+            ]);
+        };
+        return $this->render('advertisement/newForm.html.twig', [
+            'newForm' => $newForm->createView(),
         ]);
     }
 }

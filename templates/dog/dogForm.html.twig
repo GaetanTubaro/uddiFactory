@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% form_theme dogForm 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('app_home') }}">
+		<button class="btn btn-secondary mt-3 ms-3">Retour</button>
+	</a>
+    <h1 class="text-center m-4">Ajouter un chien</h1>
+    <div class="container mt-3 mx-auto w-50">   
+        {{form(dogForm)}}
+    </div>
+{% endblock %}

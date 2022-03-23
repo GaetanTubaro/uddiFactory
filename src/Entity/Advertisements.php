@@ -35,7 +35,7 @@ class Advertisements
     private $suppression_date;
 
     #[Groups(['read:Advertisement'])]
-    #[ORM\OneToMany(mappedBy: 'advertisement', targetEntity: Dogs::class)]
+    #[ORM\OneToMany(mappedBy: 'advertisement', targetEntity: Dogs::class, cascade:['persist'])]
     private $advertisement_dogs;
 
     #[Groups(['read:Advertisement'])]
