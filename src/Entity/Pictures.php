@@ -15,7 +15,7 @@ class Pictures
     private $id;
 
     #[Groups(['read:Advertisement', 'read:Dog'])]
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'text')]
     private $path;
 
     #[ORM\ManyToOne(targetEntity: Dogs::class, inversedBy: 'pictures')]

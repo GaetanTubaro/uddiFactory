@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Dogs;
+use App\Entity\Pictures;
 use App\Entity\Species;
 use App\Repository\SpeciesRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -53,7 +55,15 @@ class DogType extends AbstractType
                     return $spc->createQueryBuilder('s')
                         ->orderBy('s.name', 'ASC');
                 },
-            ]);
+            ])
+            ->add('pictures', CollectionType::class, [
+                'entry_type' => PictureType::class,
+                'entry_options' => [
+                    'label' => false,
+                ],
+                'label' => false,
+            ])
+            ;
             if ($options['submit']) {
                 $builder->add('Ajouter', SubmitType::class);
             }

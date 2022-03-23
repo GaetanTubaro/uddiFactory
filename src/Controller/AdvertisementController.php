@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Advertisements;
 use App\Entity\Dogs;
 use App\Entity\Messages;
+use App\Entity\Pictures;
 use App\Entity\Requests;
 use App\Entity\User;
 use App\Form\AdoptionType;
@@ -72,11 +73,13 @@ class AdvertisementController extends AbstractController
 
     #[Route('/new_advertisement', name: 'create_advertisement')]
     #[IsGranted('ROLE_ASSO')]
-    public function create_advertisement(AdvertisementsRepository $advertisementsRepository, Request $request): Response
+    public function createAdvertisement(AdvertisementsRepository $advertisementsRepository, Request $request): Response
     {   
         /** @var User $asso */
         $asso = $this->getUser();
         $newDog = new Dogs();
+        $newPicture = new Pictures();
+        $newDog->addPicture($newPicture);
         $newAdvertisement = new Advertisements();
         $newAdvertisement->addAdvertisementDog($newDog);
         $newAdvertisement->setCreationDate(new DateTime());
