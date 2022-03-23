@@ -38,6 +38,7 @@ class AdvertisementController extends AbstractController
     {
         $adoptionRequest = new Requests();
         $message = new Messages();
+        $message->setWriter($this->getUser());
         $adoptionRequest->addMessage($message);
         $adoptionRequest->setAdopter($this->getUser());
         $form = $this->createForm(AdoptionType::class, $adoptionRequest, [
