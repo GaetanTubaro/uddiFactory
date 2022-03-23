@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Messages;
-use App\Entity\Requests;
 use App\Form\MessageType;
 use App\Repository\AdvertisementsRepository;
 use App\Repository\MessagesRepository;
@@ -20,6 +19,7 @@ class MyAccountController extends AbstractController
     #[Security("is_granted('ROLE_ADOPTERS') or is_granted('ROLE_ASSO')")]
     public function index(RequestsRepository $requestsRepository, AdvertisementsRepository $advertisementsRepository): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         if (in_array('ROLE_ADOPTERS', $user->getRoles())) {
             return $this->render('my_account/user_account.html.twig', [
@@ -29,6 +29,7 @@ class MyAccountController extends AbstractController
         } elseif (in_array('ROLE_ASSO', $user->getRoles())) {
             return $this->render('my_account/asso_account.html.twig', [
                 'advertisements' => $advertisementsRepository->findBy(['association' => $user]),
+                'requests' => $requestsRepository->findByAssociation($user->getId()),
                 'user' => $user,
         ]);
         }

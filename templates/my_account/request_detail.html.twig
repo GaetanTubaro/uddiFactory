@@ -73,7 +73,7 @@
 					</div>
 				{% endfor %}
 
-				{% if is_granted('ROLE_ADOPTERS') and request.message.last.writer != user %}
+				{% if (is_granted('ROLE_ADOPTERS') and request.message.last.writer != user) or is_granted('ROLE_ASSO') %}
 					<div class="mt-5">
 						<h2 class="fs-5 mb-3">Envoyer un nouveau message</h2>
 
