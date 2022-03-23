@@ -40,10 +40,11 @@ class MyAccountController extends AbstractController
     public function requestDetails(RequestsRepository $requestsRepository, $id, Request $req, MessagesRepository $messagesRepository): Response
     {
         $request = $requestsRepository->find($id);
+        $user = $this->getUser();
 
         $message = new Messages();
         $message->setRequest($request)
-                ->setWriter($this->getUser());
+                ->setWriter($user);
         $form = $this->createForm(MessageType::class, $message, [
         ]);
 
@@ -55,9 +56,16 @@ class MyAccountController extends AbstractController
             return $this->redirectToRoute('request_detail', ['id' => $id]);
         }
 
+        foreach ($request->getMessage() as $reqMess) {
+            if ($reqMess->getWriter() != $user) {
+                $reqMess->setIsRead(true);
+                $messagesRepository->add($reqMess);
+            }
+        }
+
         return $this->render('my_account/request_detail.html.twig', [
             'request' => $request,
-            'user' => $this->getUser(),
+            'user' => $user,
             'messageForm' => $form->createView(),
             ]);
     }
