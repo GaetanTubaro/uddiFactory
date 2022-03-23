@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -31,7 +32,7 @@ class DoctrineHashPasswordSubscriber implements EventSubscriberInterface
 
     public function preUpdate(LifecycleEventArgs $args): void
     {
-        $this->hashPssword($args);
+        $this->hashPassword($args);
     }
 
     protected function hashPassword(LifecycleEventArgs $args): void
