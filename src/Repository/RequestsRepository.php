@@ -45,6 +45,24 @@ class RequestsRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Requests[] Returns an array of Requests objects
+     */
+    
+    public function findByAssociation($id)
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.dog', 'd')
+            ->join('d.advertisement', 'ad')
+            ->join('ad.association', 'asso')
+            ->andWhere('asso.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+
     // /**
     //  * @return Requests[] Returns an array of Requests objects
     //  */

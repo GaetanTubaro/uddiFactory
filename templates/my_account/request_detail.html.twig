@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+{% form_theme messageForm 'bootstrap_5_horizontal_layout.html.twig' %}
+
+{% block body %}
+	<div class="container mt-3">
+		<div class="row w-100 mt-4">
+			<div id="carouselDog{{ request.dog.id }}" class="carousel slide col-3" data-bs-ride="carousel">
+				<div class="carousel-inner" style="max-height:500px">
+					{% for picture in request.dog.getPictures() %}
+						<div class="carousel-item {% if loop.first %}active{% endif %}">
+							<img src="{{ picture.path }}" class="d-block w-100">
+						</div>
+					{% endfor %}
+				</div>
+				{% if request.dog.getPictures()|length > 1 %}
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselDog{{ dog.id }}" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselDog{{ dog.id }}" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				{% endif %}
+			</div>
+			<div class="col mt-2">
+				<h2 class="">{{ request.dog.name }}</h2>
+				<p class="mb-1">
+					<span class="fw-bold">Date de naissance :</span>
+					{{ request.dog.getBirthDate()|format_datetime('short', 'none') }}</p>
+				<p class="mb-1">
+					<span class="fw-bold">Race :</span>
+					{% if request.dog.getDogSpecies()|length > 1 %}Croisé
+					{% endif %}
+					{% for specie in request.dog.getDogSpecies() %}
+						{% if not loop.first %}
+							et
+						{% endif %}
+						{{ specie.name }}
+					{% endfor %}
+				</p>
+				<p class="mb-1">
+					<span class="fw-bold">LOF :</span>
+					{% if request.dog.isLOF %}oui{% else %}non
+					{% endif %}
+				</p>
+				<p class="mb-1">
+					<span class="fw-bold">Accepte les autres animaux :</span>
+					{% if request.dog.otherAnimals %}oui{% else %}non
+					{% endif %}
+				</p>
+				<p class="mb-1">
+					<span class="fw-bold">Description :</span>
+					{{ request.dog.description }}</p>
+				<p class="mb-1">
+					<span class="fw-bold">Passif :</span>
+					{{ request.dog.past }}</p>
+			</div>
+
+			{# --------------------------------------------- FIL DE DISCUSSION ------------------------------------------------- #}
+
+			<div class="col-4">
+				<h1>Fil de discussion</h1>
+				{% for message in request.message %}
+					<div class="toast show mt-3 {% if message.writer != user %}ms-auto{% endif %}">
+						<div class="toast-header">
+							<strong class="me-auto">{{ message.writer.username }}</strong>
+							<small>{{ message.creationDate|format_datetime('short', 'short') }}</small>
+						</div>
+						<div class="toast-body">
+							{{ message.description }}
+						</div>
+					</div>
+				{% endfor %}
+
+				{% if (is_granted('ROLE_ADOPTERS') and request.message.last.writer != user) or is_granted('ROLE_ASSO') %}
+					<div class="mt-5">
+						<h2 class="fs-5 mb-3">Envoyer un nouveau message</h2>
+
+						{{ form(messageForm) }}
+
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% endblock %}
