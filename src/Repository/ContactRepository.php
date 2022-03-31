@@ -45,6 +45,15 @@ class ContactRepository extends ServiceEntityRepository
         }
     }
 
+    public function lastTenMessages()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.creation_date', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return Contact[] Returns an array of Contact objects
     //  */
