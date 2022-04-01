@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -17,12 +18,16 @@ class Contact
     private $titre;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\Length(min: 100)]
+    #[Assert\Length(max: 2500)]
     private $message;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Email(message:"Chaine de caractères indiquant que le mail n'est pas valide") ]
     private $mail;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min: 10)]
     private $sujet;
 
     #[ORM\Column(type: 'datetime')]
