@@ -1,1 +1,26 @@
 {% extends "@EasyAdmin/page/content.html.twig" %}
+
+{% block main %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Titre</th>
+      <th scope="col">Sujet</th>
+      <th scope="col">Mail</th>
+      <th scope="col">Date De Création</th>
+      <th scope="col">Message</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for message in tenMessages %}
+    <tr>
+      <td>{{message.getTitre()}}</td>
+      <td>{{message.getSujet()}}</td>
+      <td>{{message.getMail()}}</td>
+      <td>{{message.getCreationDate()|format_datetime('short', 'short', locale='fr')}}</td>
+      <td>{{message.getMessage()}}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}
