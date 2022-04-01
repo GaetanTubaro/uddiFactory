@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+{% form_theme formContact 'bootstrap_5_layout.html.twig' %} 
+<div class="container mt-3 mx-auto w-25">
+{{form(formContact)}}
+</div>
+
+{% endblock %}

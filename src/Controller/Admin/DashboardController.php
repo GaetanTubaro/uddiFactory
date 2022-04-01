@@ -6,6 +6,7 @@ use App\Entity\Adopters;
 use App\Entity\Associations;
 use App\Entity\Species;
 use App\Entity\User;
+use App\Repository\ContactRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -14,7 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+    protected $tenMessages;
+
+    public function __construct(ContactRepository $contact)
+    {
+        $this->tenMessages = $contact->lastTenMessages();
+    }
+
     #[Route('/admin', name: 'admin_dashboard')]
+
     public function index(): Response
     {
         // return parent::index();
@@ -33,7 +42,9 @@ class DashboardController extends AbstractDashboardController
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-        return $this->render('admin/dashboard.html.twig');
+        return $this->render('admin/dashboard.html.twig', [
+            'tenMessages'=>$this->tenMessages
+        ]);
     }
 
     public function configureDashboard(): Dashboard
